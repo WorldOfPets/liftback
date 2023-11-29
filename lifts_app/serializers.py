@@ -63,21 +63,7 @@ class reportSerializer(serializers.ModelSerializer):
             "frequently_used_lifts",
         ]
 
-class requestsSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = models.requests
-        fields = [
-            "date_closed",
-            "price",
-            "created",
-            "date_booking",
-            "last_updated",
-            "customer",
-            "manager",
-            "status",
-            "reports",
-        ]
 
 class status_requestSerializer(serializers.ModelSerializer):
 
@@ -91,10 +77,32 @@ class status_requestSerializer(serializers.ModelSerializer):
 
 class CustomUserSerializer(serializers.ModelSerializer):
 
+    favorite_lifts = liftSerializer(many=True, read_only=False)
+
     class Meta:
         model = models.CustomUser
         fields = [
             "phone_number",
             "second_name",
             "favorite_lifts",
+            
+        ]
+
+class requestsSerializer(serializers.ModelSerializer):
+
+    manager = CustomUserSerializer(many=False, read_only=True)
+    customer = CustomUserSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = models.requests
+        fields = [
+            "date_closed",
+            "price",
+            "created",
+            "date_booking",
+            "last_updated",
+            "customer",
+            "manager",
+            "status",
+            "reports",
         ]
