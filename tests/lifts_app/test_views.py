@@ -1,5 +1,6 @@
 import pytest
 import test_helpers
+from datetime import datetime
 
 from django.urls import reverse
 
@@ -62,7 +63,7 @@ def tests_lift_create_view(client):
         "vendor_code": "text",
         "is_booked": True,
         "state": "text",
-        "price": 1.0f,
+        "price": 1.0,
     }
     response = client.post(url, data)
     assert response.status_code == 302
@@ -83,7 +84,7 @@ def tests_lift_update_view(client):
         "vendor_code": "text",
         "is_booked": True,
         "state": "text",
-        "price": 1.0f,
+        "price": 1.0,
     }
     response = client.post(url, data)
     assert response.status_code == 302
@@ -188,8 +189,8 @@ def tests_report_create_view(client):
     url = reverse("lifts_app_report_create")
     data = {
         "date": datetime.now(),
-        "sales_amount": 1.0f,
-        "expenses": 1.0f,
+        "sales_amount": 1.0,
+        "expenses": 1.0,
         "manager": manager.pk,
         "requests": requests.pk,
         "frequently_used_lifts": frequently_used_lifts.pk,
@@ -214,8 +215,8 @@ def tests_report_update_view(client):
     url = reverse("lifts_app_report_update", args=[instance.pk, ])
     data = {
         "date": datetime.now(),
-        "sales_amount": 1.0f,
-        "expenses": 1.0f,
+        "sales_amount": 1.0,
+        "expenses": 1.0,
         "manager": manager.pk,
         "requests": requests.pk,
         "frequently_used_lifts": frequently_used_lifts.pk,
@@ -242,7 +243,7 @@ def tests_requests_create_view(client):
     url = reverse("lifts_app_requests_create")
     data = {
         "date_closed": datetime.now(),
-        "price": 1.0f,
+        "price": 1.0,
         "date_booking": datetime.now(),
         "customer": customer.pk,
         "manager": manager.pk,
@@ -270,7 +271,7 @@ def tests_requests_update_view(client):
     url = reverse("lifts_app_requests_update", args=[instance.pk, ])
     data = {
         "date_closed": datetime.now(),
-        "price": 1.0f,
+        "price": 1.0,
         "date_booking": datetime.now(),
         "customer": customer.pk,
         "manager": manager.pk,
