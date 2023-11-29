@@ -1,0 +1,24 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'lifts_app_report_list' %}">
+    report Listing
+    </a>
+</p>
+    
+<table class="table">
+    <tr><td>date</td><td>{{ object.date }}</td></tr>
+    <tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
+    <tr><td>sales_amount</td><td>{{ object.sales_amount }}</td></tr>
+    <tr><td>created</td><td>{{ object.created }}</td></tr>
+    <tr><td>expenses</td><td>{{ object.expenses }}</td></tr>
+    <tr><td>manager</td><td>{{ object.manager }}</td></tr>
+    <tr><td>requests</td><td>{{ object.requests }}</td></tr>
+    <tr><td>frequently_used_lifts</td><td>{{ object.frequently_used_lifts }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit</a>
+
+{% endblock %}

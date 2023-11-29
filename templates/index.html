@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="m-2"><h4>lifts_app</h4></div>
+<div class="m-2"><a class="btn btn-light" href="{% url 'lifts_app_frequently_used_lifts_list' %}">frequently_used_lifts Listing</a></div>
+<div class="m-2"><a class="btn btn-light" href="{% url 'lifts_app_lift_list' %}">lift Listing</a></div>
+<div class="m-2"><a class="btn btn-light" href="{% url 'lifts_app_lift_images_list' %}">lift_images Listing</a></div>
+<div class="m-2"><a class="btn btn-light" href="{% url 'lifts_app_lift_info_list' %}">lift_info Listing</a></div>
+<div class="m-2"><a class="btn btn-light" href="{% url 'lifts_app_report_list' %}">report Listing</a></div>
+<div class="m-2"><a class="btn btn-light" href="{% url 'lifts_app_requests_list' %}">requests Listing</a></div>
+<div class="m-2"><a class="btn btn-light" href="{% url 'lifts_app_status_request_list' %}">status_request Listing</a></div>
+<div class="m-2"><a class="btn btn-light" href="{% url 'lifts_app_CustomUser_list' %}">CustomUser Listing</a></div>
+{% endblock %}

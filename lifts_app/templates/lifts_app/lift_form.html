@@ -1,0 +1,54 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'lifts_app_lift_list' %}">
+    lift Listing
+    </a>
+</p>
+    
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{form.errors}}
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="last_updated">last_updated: </label>
+      <input class="form-control col-sm-10"
+         id="last_updated" type="datetime-local"
+         name="last_updated" value="{{ object.last_updated }}" disabled>
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="vendor_code">vendor_code: </label>
+      <input class="form-control col-sm-10"
+         id="vendor_code" type="text"
+         name="vendor_code" value="{{ object.vendor_code }}">
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="is_booked">is_booked: </label>
+      <input class="form-control col-sm-10"
+         id="is_booked" type="checkbox"
+         name="is_booked" value="{{ object.is_booked }}">
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="state">state: </label>
+      <input class="form-control col-sm-10"
+         id="state" type="text"
+         name="state" value="{{ object.state }}">
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="created">created: </label>
+      <input class="form-control col-sm-10"
+         id="created" type="datetime-local"
+         name="created" value="{{ object.created }}" disabled>
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="price">price: </label>
+      <input class="form-control col-sm-10"
+         id="price" type="text"
+         name="price" value="{{ object.price }}">
+  </div>
+  <input type="submit" value="Save" class="btn btn-primary">
+</form>
+
+{% endblock %}

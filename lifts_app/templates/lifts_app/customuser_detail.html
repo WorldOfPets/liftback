@@ -1,0 +1,19 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'lifts_app_CustomUser_list' %}">
+    CustomUser Listing
+    </a>
+</p>
+    
+<table class="table">
+    <tr><td>phone_number</td><td>{{ object.phone_number }}</td></tr>
+    <tr><td>second_name</td><td>{{ object.second_name }}</td></tr>
+    <tr><td>favorite_lifts</td><td>{{ object.favorite_lifts }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit</a>
+
+{% endblock %}

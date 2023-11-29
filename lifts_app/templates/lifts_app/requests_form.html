@@ -1,0 +1,64 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'lifts_app_requests_list' %}">
+    requests Listing
+    </a>
+</p>
+    
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{form.errors}}
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="date_closed">date_closed: </label>
+      <input class="form-control col-sm-10"
+         id="date_closed" type="datetime-local"
+         name="date_closed" value="{{ object.date_closed }}">
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="price">price: </label>
+      <input class="form-control col-sm-10"
+         id="price" type="text"
+         name="price" value="{{ object.price }}">
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="created">created: </label>
+      <input class="form-control col-sm-10"
+         id="created" type="datetime-local"
+         name="created" value="{{ object.created }}" disabled>
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="date_booking">date_booking: </label>
+      <input class="form-control col-sm-10"
+         id="date_booking" type="datetime-local"
+         name="date_booking" value="{{ object.date_booking }}">
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="last_updated">last_updated: </label>
+      <input class="form-control col-sm-10"
+         id="last_updated" type="datetime-local"
+         name="last_updated" value="{{ object.last_updated }}" disabled>
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="customer">customer: </label>
+      {{ form.customer }}
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="manager">manager: </label>
+      {{ form.manager }}
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="status">status: </label>
+      {{ form.status }}
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="reports">reports: </label>
+      {{ form.reports }}
+  </div>
+  <input type="submit" value="Save" class="btn btn-primary">
+</form>
+
+{% endblock %}
