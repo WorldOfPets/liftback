@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework.authtoken.views import obtain_auth_token
 
 from . import api
 from . import views
@@ -17,6 +18,8 @@ router.register("CustomUser", api.CustomUserViewSet)
 
 urlpatterns = (
     path("api/v1/", include(router.urls)),
+    path('api/auth/', include('djoser.urls')),
+    path('api/auth-token/', include('djoser.urls.authtoken')),
     path("lifts_app/frequently_used_lifts/", views.frequently_used_liftsListView.as_view(), name="lifts_app_frequently_used_lifts_list"),
     path("lifts_app/frequently_used_lifts/create/", views.frequently_used_liftsCreateView.as_view(), name="lifts_app_frequently_used_lifts_create"),
     path("lifts_app/frequently_used_lifts/detail/<int:pk>/", views.frequently_used_liftsDetailView.as_view(), name="lifts_app_frequently_used_lifts_detail"),
