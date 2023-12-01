@@ -21,7 +21,7 @@ class liftViewSet(viewsets.ModelViewSet):
 
     queryset = models.lift.objects.all()
     serializer_class = serializers.liftSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = "__all__"
@@ -35,8 +35,8 @@ class lift_imagesViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.lift_imagesSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = "__all__"
-    ordering_fields = "__all__"
+    filterset_fields = ["lift"]
+    #ordering_fields = "__all__"
 
 
 class lift_infoViewSet(viewsets.ModelViewSet):

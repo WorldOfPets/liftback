@@ -1,6 +1,9 @@
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
+# from rest_framework_swagger.views import get_swagger_view
+
+# schema_view = get_swagger_view(title='Pastebin API')
 
 from . import api
 from . import views
@@ -17,6 +20,7 @@ router.register("status_request", api.status_requestViewSet)
 router.register("CustomUser", api.CustomUserViewSet)
 
 urlpatterns = (
+    path("api/docs/", views.SwaggerSchemaView.as_view()),
     path("api/v1/", include(router.urls)),
     path('api/auth/', include('djoser.urls')),
     path('api/auth-token/', include('djoser.urls.authtoken')),

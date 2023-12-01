@@ -64,11 +64,6 @@ class lift_imagesAdmin(admin.ModelAdmin):
         "created",
         "image",
     ]
-    readonly_fields = [
-        "last_updated",
-        "created",
-        "image",
-    ]
 
 
 class lift_infoAdminForm(forms.ModelForm):
