@@ -2,6 +2,7 @@ from django.contrib import admin
 from django import forms
 import csv
 from django.http import HttpResponse
+from django.contrib.auth.admin import UserAdmin
 from . import models
 
 class ExportCsvMixin:
@@ -137,10 +138,12 @@ class requestsAdmin(admin.ModelAdmin, ExportCsvMixin):
         "lift",
         "customer",
         "manager",
+        "status",
     ]
     list_display_links = ["id", "price"]
     #prepopulated_fields = ["customer", "manager"]
     list_select_related = ["lift"]
+    list_filter = ["status"]
     search_fields = ["price", "id", "lift__vendor_code"]
     actions = ["export_as_csv"]
     readonly_fields = [
@@ -169,15 +172,10 @@ class status_requestAdmin(admin.ModelAdmin):
     ]
 
 
-class CustomUserAdminForm(forms.ModelForm):
-
-    class Meta:
-        model = models.CustomUser
-        fields = "__all__"
 
 
-class CustomUserAdmin(admin.ModelAdmin):
-    form = CustomUserAdminForm
+
+class CustomUserAdmin(UserAdmin):
     list_display = [
         "username",
         "email",
