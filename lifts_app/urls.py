@@ -20,7 +20,7 @@ router.register("status_request", api.status_requestViewSet)
 #router.register("CustomUser", api.CustomUserViewSet)
 
 urlpatterns = (
-    path("api/docs/", views.SwaggerSchemaView.as_view()),
+    #path("api/docs/", views.SwaggerSchemaView.as_view()),
     path("api/v1/", include(router.urls)),
     path('api/auth/', include('djoser.urls')),
     path('api/auth-token/', include('djoser.urls.authtoken')),

@@ -1,8 +1,28 @@
 from django.contrib import admin
 from django import forms
-
+import csv
+from django.http import HttpResponse
 from . import models
 
+class ExportCsvMixin:
+    def export_as_csv(self, request, queryset):
+
+        meta = self.model._meta
+        field_names = [field.name for field in meta.fields]
+        
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename={}.csv'.format(meta)
+        writer = csv.writer(response)
+        data = []
+        for i in field_names:
+            data.append(i)
+        writer.writerow(data)
+        for obj in queryset:
+            row = writer.writerow([getattr(obj, field) for field in field_names])
+
+        return response
+
+    export_as_csv.short_description = "Export Selected"
 
 class frequently_used_liftsAdminForm(forms.ModelForm):
 
@@ -33,14 +53,6 @@ class liftAdminForm(forms.ModelForm):
 class liftAdmin(admin.ModelAdmin):
     form = liftAdminForm
     list_display = [
-        "last_updated",
-        "vendor_code",
-        "is_booked",
-        "state",
-        "created",
-        "price",
-    ]
-    readonly_fields = [
         "last_updated",
         "vendor_code",
         "is_booked",
@@ -82,8 +94,6 @@ class lift_infoAdmin(admin.ModelAdmin):
     ]
     readonly_fields = [
         "created",
-        "description",
-        "last_updated",
     ]
 
 
@@ -119,20 +129,22 @@ class requestsAdminForm(forms.ModelForm):
         fields = "__all__"
 
 
-class requestsAdmin(admin.ModelAdmin):
+class requestsAdmin(admin.ModelAdmin, ExportCsvMixin):
     form = requestsAdminForm
     list_display = [
-        "date_closed",
+        "id",
         "price",
-        "created",
-        "date_booking",
-        "last_updated",
+        "lift",
+        "customer",
+        "manager",
     ]
+    list_display_links = ["id", "price"]
+    #prepopulated_fields = ["customer", "manager"]
+    list_select_related = ["lift"]
+    search_fields = ["price", "id", "lift__vendor_code"]
+    actions = ["export_as_csv"]
     readonly_fields = [
-        "date_closed",
-        "price",
         "created",
-        "date_booking",
         "last_updated",
     ]
 
@@ -153,7 +165,6 @@ class status_requestAdmin(admin.ModelAdmin):
     ]
     readonly_fields = [
         "last_updated",
-        "name",
         "created",
     ]
 

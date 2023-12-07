@@ -6,15 +6,16 @@ from django.utils import timezone
 class frequently_used_lifts(models.Model):
 
     # Relationships
-    lift = models.ForeignKey("lifts_app.lift", on_delete=models.CASCADE)
-    count = models.BigIntegerField()
+    lift = models.ForeignKey("lifts_app.lift", on_delete=models.CASCADE, verbose_name="Подъемник")
+    count = models.BigIntegerField(verbose_name="Количество заказов")
 
     # Fields
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    last_updated = models.DateTimeField(auto_now=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name="Дата добавления")
+    last_updated = models.DateTimeField(auto_now=True, editable=False, verbose_name="Последнее обновление")
 
     class Meta:
-        pass
+        verbose_name= "Часто используемый подъемник"
+        verbose_name_plural = "Часто используемые подъемники"
 
     def __str__(self):
         return str(self.pk)
@@ -38,10 +39,11 @@ class lift(models.Model):
     price = models.FloatField()
 
     class Meta:
-        pass
+        verbose_name= "Подъемник"
+        verbose_name_plural = "Подъемники"
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.vendor_code)
 
     def get_absolute_url(self):
         return reverse("lifts_app_lift_detail", args=(self.pk,))
@@ -62,7 +64,8 @@ class lift_images(models.Model):
     image = models.ImageField(upload_to="upload/images/")
 
     class Meta:
-        pass
+        verbose_name= "Изображение подъемника"
+        verbose_name_plural = "Изображения подъемников"
 
     def __str__(self):
         return str(self.pk)
@@ -86,7 +89,8 @@ class lift_info(models.Model):
     last_updated = models.DateTimeField(auto_now=True, editable=False)
 
     class Meta:
-        pass
+        verbose_name= "Информация о подъемнике"
+        verbose_name_plural = "Информация о подъемниках"
 
     def __str__(self):
         return str(self.pk)
@@ -114,7 +118,8 @@ class report(models.Model):
     expenses = models.FloatField(default=500.0)
 
     class Meta:
-        pass
+        verbose_name= "Отчет"
+        verbose_name_plural = "Отчеты"
 
     def __str__(self):
         return str(self.pk)
@@ -130,20 +135,21 @@ class report(models.Model):
 class requests(models.Model):
 
     # Relationships
-    customer = models.ForeignKey("lifts_app.CustomUser", related_name="fk_requests_customer", on_delete=models.CASCADE)
-    manager = models.ForeignKey("lifts_app.CustomUser", related_name="fk_requests_manager", on_delete=models.CASCADE)
-    status = models.ForeignKey("lifts_app.status_request", on_delete=models.CASCADE)
-    reports = models.ManyToManyField("lifts_app.report", related_name="mtm_reports_for_request")
-    lift = models.ForeignKey("lifts_app.lift", related_name="fk_request_lift", on_delete=models.CASCADE)
+    customer = models.ForeignKey("lifts_app.CustomUser", related_name="fk_requests_customer", on_delete=models.CASCADE, verbose_name="Заказчик")
+    manager = models.ForeignKey("lifts_app.CustomUser", related_name="fk_requests_manager", on_delete=models.CASCADE, verbose_name="Менеджер")
+    status = models.ForeignKey("lifts_app.status_request", on_delete=models.CASCADE, verbose_name="Статус")
+    reports = models.ManyToManyField("lifts_app.report", related_name="mtm_reports_for_request", verbose_name="Отечеты")
+    lift = models.ForeignKey("lifts_app.lift", related_name="fk_request_lift", on_delete=models.CASCADE, verbose_name="Подъемник")
     # Fields
-    date_closed = models.DateTimeField(null=True)
-    price = models.FloatField(default=4000.0)
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    date_booking = models.DateTimeField(default=timezone.now)
-    last_updated = models.DateTimeField(auto_now=True, editable=False)
+    date_closed = models.DateTimeField(null=True, verbose_name="Дата завершения")
+    price = models.FloatField(default=4000.0, verbose_name="Цена")
+    created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name="Дата создания")
+    date_booking = models.DateTimeField(default=timezone.now, verbose_name="Дата бронирования")
+    last_updated = models.DateTimeField(auto_now=True, editable=False, verbose_name="Последнее обновление")
 
     class Meta:
-        pass
+        verbose_name= "Заявка"
+        verbose_name_plural = "Заявки"
 
     def __str__(self):
         return str(self.pk)
@@ -164,7 +170,8 @@ class status_request(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
 
     class Meta:
-        pass
+        verbose_name= "Статус заявки"
+        verbose_name_plural = "Статусы заявок"
 
     def __str__(self):
         return str(self.name)
@@ -187,10 +194,11 @@ class CustomUser(AbstractUser):
     second_name = models.CharField(max_length=30)
 
     class Meta:
-        pass
+        verbose_name= "Пользователь"
+        verbose_name_plural = "Пользователи"
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.username)
 
     def get_absolute_url(self):
         return reverse("lifts_app_CustomUser_detail", args=(self.pk,))
