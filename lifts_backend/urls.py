@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
-
+from lifts_app.views import SwaggerSchemaView
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    #path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    path("", SwaggerSchemaView.as_view()),
     path('lifts_app/', include('lifts_app.urls')),
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
