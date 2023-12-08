@@ -4,24 +4,23 @@ import csv
 from django.http import HttpResponse
 from django.contrib.auth.admin import UserAdmin
 from . import models
+import pygsheets
+import pandas as pd
+
 
 class ExportCsvMixin:
     def export_as_csv(self, request, queryset):
-
         meta = self.model._meta
+        gc = pygsheets.authorize(service_file='creds.json')
+        df = pd.DataFrame()
         field_names = [field.name for field in meta.fields]
-        
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename={}.csv'.format(meta)
-        writer = csv.writer(response)
-        data = []
         for i in field_names:
-            data.append(i)
-        writer.writerow(data)
-        for obj in queryset:
-            row = writer.writerow([getattr(obj, field) for field in field_names])
-
-        return response
+            df[f'{i}'] = [getattr(obj, i) for obj in queryset]
+        sh = gc.open('testpython')
+        #select the first sheet 
+        wks = sh[0]
+        #update the first sheet with df, starting at cell B2. 
+        wks.set_dataframe(df,(1,1))
 
     export_as_csv.short_description = "Export Selected"
 
