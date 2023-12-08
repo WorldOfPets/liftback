@@ -25,4 +25,5 @@ urlpatterns = [
     path('lifts_app/', include('lifts_app.urls')),
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/profile/', SwaggerSchemaView.as_view()),
 ]
