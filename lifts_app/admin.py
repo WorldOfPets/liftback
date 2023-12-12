@@ -40,6 +40,8 @@ class frequently_used_liftsAdmin(admin.ModelAdmin):
     ]
     list_display_links = ["lift"]
     list_editable = ["count"]
+    list_filter = ["lift"]
+    search_fields = ["lift__vendor_code"]
 
 
 class liftAdminForm(forms.ModelForm):
@@ -60,6 +62,8 @@ class liftAdmin(admin.ModelAdmin):
     ]
     list_display_links = ["id", "vendor_code"]
     list_editable = ["is_booked"]
+    list_filter = ["is_booked", "state", "price"]
+    search_fields = ["vendor_code"]
 
 
 class lift_imagesAdminForm(forms.ModelForm):
@@ -93,6 +97,7 @@ class lift_infoAdmin(admin.ModelAdmin):
         "description",
     ]
     list_display_links = ["id", "description"]
+    search_fields = ["description"]
 
 
 class reportAdminForm(forms.ModelForm):
@@ -113,6 +118,8 @@ class reportAdmin(admin.ModelAdmin):
         "expenses",
     ]
     list_display_links = ["id", "manager"]
+    list_filter = ["manager", "date", "created"]
+    search_fields = ["manager__username"]
 
 
 class requestsAdminForm(forms.ModelForm):
@@ -138,10 +145,6 @@ class requestsAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_filter = ["status"]
     search_fields = ["price", "id", "lift__vendor_code"]
     actions = ["export_as_csv"]
-    readonly_fields = [
-        "created",
-        "last_updated",
-    ]
 
 
 class status_requestAdminForm(forms.ModelForm):
@@ -155,10 +158,7 @@ class status_requestAdmin(admin.ModelAdmin):
     form = status_requestAdminForm
     list_display =  ["id", "name"]
     list_display_links = ["id", "name"]
-    readonly_fields = [
-        "last_updated",
-        "created",
-    ]
+    search_fields = ["name"]
 
 
 
@@ -190,6 +190,11 @@ class CustomUserAdmin(UserAdmin):
         ),
         ("Важные даты", {"fields": ("last_login", "date_joined")}),
     )
+    list_filter = ["is_superuser",
+        "is_staff",
+        "is_active",]
+    search_fields = ["username",
+        "email"]
     list_editable = ["is_superuser", "is_staff", "is_active"]
     list_display_links = ["id", "username", "email"]
 
