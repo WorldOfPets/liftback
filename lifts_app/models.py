@@ -10,7 +10,7 @@ class frequently_used_lifts(models.Model):
     count = models.BigIntegerField(verbose_name="Количество заказов")
 
     # Fields
-    created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name="Дата добавления")
+    created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name="Дата создания")
     last_updated = models.DateTimeField(auto_now=True, editable=False, verbose_name="Последнее обновление")
 
     class Meta:
@@ -31,12 +31,12 @@ class frequently_used_lifts(models.Model):
 class lift(models.Model):
 
     # Fields
-    last_updated = models.DateTimeField(auto_now=True, editable=False)
-    vendor_code = models.CharField(max_length=150)
-    is_booked = models.BooleanField()
-    state = models.CharField(max_length=30)
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    price = models.FloatField()
+    last_updated = models.DateTimeField(auto_now=True, editable=False, verbose_name="Последнее обновление")
+    vendor_code = models.CharField(max_length=150, verbose_name="Артикул")
+    is_booked = models.BooleanField(verbose_name="Забронирован")
+    state = models.CharField(max_length=30, verbose_name="Состояние")
+    created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name="Дата создания")
+    price = models.FloatField(verbose_name="Цена")
 
     class Meta:
         verbose_name= "Подъемник"
@@ -45,8 +45,8 @@ class lift(models.Model):
     def __str__(self):
         return str(self.vendor_code)
 
-    def get_absolute_url(self):
-        return reverse("lifts_app_lift_detail", args=(self.pk,))
+    # def get_absolute_url(self):
+    #     return reverse("lifts_app_lift_detail", args=(self.pk,))
 
     def get_update_url(self):
         return reverse("lifts_app_lift_update", args=(self.pk,))
@@ -59,8 +59,8 @@ class lift_images(models.Model):
     lift = models.ForeignKey("lifts_app.lift", on_delete=models.CASCADE)
 
     # Fields
-    last_updated = models.DateTimeField(auto_now=True, editable=False)
-    created = models.DateTimeField(auto_now_add=True, editable=False)
+    last_updated = models.DateTimeField(auto_now=True, editable=False, verbose_name="Последнее обновление")
+    created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name="Дата создания")
     image = models.ImageField(upload_to="upload/images/")
 
     class Meta:
@@ -70,8 +70,8 @@ class lift_images(models.Model):
     def __str__(self):
         return str(self.pk)
 
-    def get_absolute_url(self):
-        return reverse("lifts_app_lift_images_detail", args=(self.pk,))
+    # def get_absolute_url(self):
+    #     return reverse("lifts_app_lift_images_detail", args=(self.pk,))
 
     def get_update_url(self):
         return reverse("lifts_app_lift_images_update", args=(self.pk,))
@@ -81,12 +81,12 @@ class lift_images(models.Model):
 class lift_info(models.Model):
 
     # Relationships
-    lift = models.OneToOneField("lifts_app.lift", on_delete=models.CASCADE)
+    lift = models.OneToOneField("lifts_app.lift", on_delete=models.CASCADE, verbose_name="Подъемник")
 
     # Fields
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    description = models.TextField(max_length=100)
-    last_updated = models.DateTimeField(auto_now=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name="Дата создания")
+    description = models.TextField(max_length=1500, verbose_name="Описание подъемника")
+    last_updated = models.DateTimeField(auto_now=True, editable=False, verbose_name="Последнее обновление")
 
     class Meta:
         verbose_name= "Информация о подъемнике"
@@ -95,8 +95,8 @@ class lift_info(models.Model):
     def __str__(self):
         return str(self.pk)
 
-    def get_absolute_url(self):
-        return reverse("lifts_app_lift_info_detail", args=(self.pk,))
+    # def get_absolute_url(self):
+    #     return reverse("lifts_app_lift_info_detail", args=(self.pk,))
 
     def get_update_url(self):
         return reverse("lifts_app_lift_info_update", args=(self.pk,))
@@ -106,16 +106,16 @@ class lift_info(models.Model):
 class report(models.Model):
 
     # Relationships
-    manager = models.ForeignKey("lifts_app.CustomUser", related_name="fk_report_manager", on_delete=models.CASCADE)
-    requests = models.ManyToManyField("lifts_app.requests", related_name="mtm_requests_for_report")
-    frequently_used_lifts = models.ForeignKey("lifts_app.frequently_used_lifts", on_delete=models.CASCADE)
+    manager = models.ForeignKey("lifts_app.CustomUser", related_name="fk_report_manager", on_delete=models.CASCADE, verbose_name="Менеджер")
+    requests = models.ManyToManyField("lifts_app.requests", related_name="mtm_requests_for_report", verbose_name="Заявки")
+    frequently_used_lifts = models.ForeignKey("lifts_app.frequently_used_lifts", on_delete=models.CASCADE, verbose_name="Часто используемые подъемники")
 
     # Fields
-    date = models.DateTimeField(null=True)
-    last_updated = models.DateTimeField(auto_now=True, editable=False)
-    sales_amount = models.FloatField(default=1000.0)
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    expenses = models.FloatField(default=500.0)
+    date = models.DateTimeField(null=True, verbose_name="Дата отчета")
+    last_updated = models.DateTimeField(auto_now=True, editable=False, verbose_name="Последнее обновление")
+    sales_amount = models.FloatField(default=1000.0, verbose_name="Объем продаж")
+    created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name="Дата создания")
+    expenses = models.FloatField(default=500.0, verbose_name="Затраты")
 
     class Meta:
         verbose_name= "Отчет"
@@ -124,8 +124,8 @@ class report(models.Model):
     def __str__(self):
         return str(self.pk)
 
-    def get_absolute_url(self):
-        return reverse("lifts_app_report_detail", args=(self.pk,))
+    # def get_absolute_url(self):
+    #     return reverse("lifts_app_report_detail", args=(self.pk,))
 
     def get_update_url(self):
         return reverse("lifts_app_report_update", args=(self.pk,))
@@ -154,8 +154,8 @@ class requests(models.Model):
     def __str__(self):
         return str(self.pk)
 
-    def get_absolute_url(self):
-        return reverse("lifts_app_requests_detail", args=(self.pk,))
+    # def get_absolute_url(self):
+    #     return reverse("lifts_app_requests_detail", args=(self.pk,))
 
     def get_update_url(self):
         return reverse("lifts_app_requests_update", args=(self.pk,))
@@ -165,9 +165,9 @@ class requests(models.Model):
 class status_request(models.Model):
 
     # Fields
-    last_updated = models.DateTimeField(auto_now=True, editable=False)
-    name = models.CharField(max_length=50)
-    created = models.DateTimeField(auto_now_add=True, editable=False)
+    last_updated = models.DateTimeField(auto_now=True, editable=False, verbose_name="Последнее обновление")
+    name = models.CharField(max_length=50, verbose_name="Назавние состояния")
+    created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name="Дата создания")
 
     class Meta:
         verbose_name= "Статус заявки"
@@ -176,8 +176,8 @@ class status_request(models.Model):
     def __str__(self):
         return str(self.name)
 
-    def get_absolute_url(self):
-        return reverse("lifts_app_status_request_detail", args=(self.pk,))
+    # def get_absolute_url(self):
+    #     return reverse("lifts_app_status_request_detail", args=(self.pk,))
 
     def get_update_url(self):
         return reverse("lifts_app_status_request_update", args=(self.pk,))
@@ -187,11 +187,11 @@ class status_request(models.Model):
 class CustomUser(AbstractUser):
 
     # Relationships
-    favorite_lifts = models.ManyToManyField("lifts_app.lift")
+    favorite_lifts = models.ManyToManyField("lifts_app.lift", verbose_name="Любимые подъемники")
 
     # Fields
-    phone_number = models.CharField(max_length=30)
-    second_name = models.CharField(max_length=30)
+    phone_number = models.CharField(max_length=30, verbose_name="Номер телефона")
+    second_name = models.CharField(max_length=30, verbose_name="Отчество")
 
     class Meta:
         verbose_name= "Пользователь"
@@ -200,8 +200,8 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return str(self.username)
 
-    def get_absolute_url(self):
-        return reverse("lifts_app_CustomUser_detail", args=(self.pk,))
+    # def get_absolute_url(self):
+    #     return reverse("lifts_app_CustomUser_detail", args=(self.pk,))
 
     def get_update_url(self):
         return reverse("lifts_app_CustomUser_update", args=(self.pk,))

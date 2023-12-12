@@ -34,13 +34,12 @@ class frequently_used_liftsAdminForm(forms.ModelForm):
 class frequently_used_liftsAdmin(admin.ModelAdmin):
     form = frequently_used_liftsAdminForm
     list_display = [
-        "created",
-        "last_updated",
+        "id",
+        "lift",
+        "count",
     ]
-    readonly_fields = [
-        "created",
-        "last_updated",
-    ]
+    list_display_links = ["lift"]
+    list_editable = ["count"]
 
 
 class liftAdminForm(forms.ModelForm):
@@ -53,13 +52,14 @@ class liftAdminForm(forms.ModelForm):
 class liftAdmin(admin.ModelAdmin):
     form = liftAdminForm
     list_display = [
-        "last_updated",
+        "id",
         "vendor_code",
         "is_booked",
         "state",
-        "created",
         "price",
     ]
+    list_display_links = ["id", "vendor_code"]
+    list_editable = ["is_booked"]
 
 
 class lift_imagesAdminForm(forms.ModelForm):
@@ -72,10 +72,11 @@ class lift_imagesAdminForm(forms.ModelForm):
 class lift_imagesAdmin(admin.ModelAdmin):
     form = lift_imagesAdminForm
     list_display = [
-        "last_updated",
+        "id",
         "created",
-        "image",
     ]
+    list_display_links = [ "id",
+        "created",]
 
 
 class lift_infoAdminForm(forms.ModelForm):
@@ -88,13 +89,10 @@ class lift_infoAdminForm(forms.ModelForm):
 class lift_infoAdmin(admin.ModelAdmin):
     form = lift_infoAdminForm
     list_display = [
-        "created",
+        "id",
         "description",
-        "last_updated",
     ]
-    readonly_fields = [
-        "created",
-    ]
+    list_display_links = ["id", "description"]
 
 
 class reportAdminForm(forms.ModelForm):
@@ -107,19 +105,14 @@ class reportAdminForm(forms.ModelForm):
 class reportAdmin(admin.ModelAdmin):
     form = reportAdminForm
     list_display = [
-        "date",
+        "id",
+        "manager",
         "last_updated",
         "sales_amount",
         "created",
         "expenses",
     ]
-    readonly_fields = [
-        "date",
-        "last_updated",
-        "sales_amount",
-        "created",
-        "expenses",
-    ]
+    list_display_links = ["id", "manager"]
 
 
 class requestsAdminForm(forms.ModelForm):
@@ -139,7 +132,7 @@ class requestsAdmin(admin.ModelAdmin, ExportCsvMixin):
         "manager",
         "status",
     ]
-    list_display_links = ["id", "price"]
+    list_display_links = ["id", "lift"]
     #prepopulated_fields = ["customer", "manager"]
     list_select_related = ["lift"]
     list_filter = ["status"]
@@ -160,11 +153,8 @@ class status_requestAdminForm(forms.ModelForm):
 
 class status_requestAdmin(admin.ModelAdmin):
     form = status_requestAdminForm
-    list_display = [
-        "last_updated",
-        "name",
-        "created",
-    ]
+    list_display =  ["id", "name"]
+    list_display_links = ["id", "name"]
     readonly_fields = [
         "last_updated",
         "created",
@@ -176,9 +166,32 @@ class status_requestAdmin(admin.ModelAdmin):
 
 class CustomUserAdmin(UserAdmin):
     list_display = [
+        "id",
         "username",
         "email",
+        "is_superuser",
+        "is_staff",
+        "is_active",
     ]
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        ("Персональная информация", {"fields": ("first_name", "last_name", "email", "favorite_lifts")}),
+        (
+            "Права доступа",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                ),
+            },
+        ),
+        ("Важные даты", {"fields": ("last_login", "date_joined")}),
+    )
+    list_editable = ["is_superuser", "is_staff", "is_active"]
+    list_display_links = ["id", "username", "email"]
 
 
 admin.site.register(models.frequently_used_lifts, frequently_used_liftsAdmin)

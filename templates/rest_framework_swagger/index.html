@@ -19,12 +19,12 @@
       <div class="wrapper">
         <div class="topbar-wrapper">
           <a href="#" class="link">
-            <img src="{% static 'rest_framework_swagger/logo_small.png' %}" alt="Swagger Logo">
-            <span>swagger</span>
+            <span>Lift REST API Docs</span>
           </a>
           <div class="download-url-wrapper">
           {% if USE_SESSION_AUTH %}
             {% if request.user.is_authenticated %}
+            <a class="download-url-button button" style="margin-right: 10px;" href="{% url 'admin:index' %}">{% trans "Admin Panel" %}</a>
             <a class="download-url-button button" href="{% url 'admin:logout' %}">{% trans "Logout" %}</a>
             {% else %}
             <a class="download-url-button button" href="{% url 'admin:login' %}">{% trans "Session Login" %}</a>
